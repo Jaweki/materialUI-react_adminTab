@@ -22,7 +22,7 @@ const RootLayout = ({ children }) => {
                     <body>
                         <container className='flex gap-4' style={{ height: '100vh', overflowY: 'auto'}}>
                             <SideBar />
-                            <main className='w-full'>
+                            <main className='w-full content flex-1 flex-col'>
                                 <TopBar />
                                 {children}
                             </main>

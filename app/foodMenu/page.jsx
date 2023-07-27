@@ -1,8 +1,8 @@
-import React from 'react'
+import FoodMenu from "@components/FoodMenu"
 
 const page = () => {
   return (
-    <div>Food Menu Page</div>
+    <FoodMenu buttonLabel={"Update Menu"} isUpdate={false}  dataRows={[]}/>
   )
 }
 

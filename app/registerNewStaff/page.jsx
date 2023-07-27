@@ -1,8 +1,13 @@
-import React from 'react'
+'use client'
+import LoginForm from '@components/LoginForm'
+import Header from '@components/Header'
 
 const page = () => {
   return (
-    <div>Register new staff member</div>
+    <>
+      <Header title={'ENROLL STAFF MEMBER'} subtitle={'Enter authenticate credentials, to register new staff member'}/>
+      <LoginForm isRegister={true} path={""}/>
+    </>
   )
 }
 

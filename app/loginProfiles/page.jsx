@@ -1,9 +1,14 @@
-import React from 'react'
+'use client'
+import LoginForm from "@components/LoginForm";
+import Header from "@components/Header";
 
-const page = () => {
+const LoginPage = () => {
   return (
-    <div>Choose Login Rank</div>
+    <>
+      <Header title={'AUTHENTICATE'} subtitle={'To Access services enter your credentials and Authenticate'}/>
+      <LoginForm isRegister={false}/>
+    </>
   )
-}
+};
 
-export default page
+export default LoginPage;
