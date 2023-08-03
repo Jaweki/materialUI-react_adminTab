@@ -95,7 +95,7 @@ const LoginForm = ({ isRegister, path }) => {
                 image: image
             }
             // make the submit to register new user
-            const resp = await fetch('http://localhost:3000/api/auth/new', {
+            const resp = await fetch('/api/register', {
             method: 'POST',
             body: JSON.stringify(payload)
         })
@@ -307,7 +307,7 @@ const LoginForm = ({ isRegister, path }) => {
                       }}
                     >
                       <FormControl sx={{ width: '50vh', mt: '25px' }}>
-                      <input type="file" accept="image/*" onChange={handleImageChange} />
+                      <input type="file" name="image" accept="image/*" onChange={handleImageChange} />
                       </FormControl>
                             <Button onClick={handleSubmit} variant="contained" color="primary" sx={{ mt: '20px', width: '25vh', height: '5vh'}}>
                             REGISTER

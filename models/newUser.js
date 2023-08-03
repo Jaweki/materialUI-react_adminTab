@@ -42,12 +42,7 @@ const staffSchema = new Schema({
     hireDate: {
         type: Date,
         required: [true, 'Date of hire is required']
-    },
-    imageType: {
-        data: { type: Buffer},
-        contentType: { type: String }
-    },
-    imageBuffer: Buffer
+    }
 })
 
 const NewStaff = models.NewStaff || model('NewStaff', staffSchema, 'dekut_mess_staff');
