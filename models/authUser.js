@@ -15,6 +15,30 @@ const authUser = new Schema({
             "Username invalid, it should contain 8-20 alphanumeric letters and be unique!"
         ]          
     },
+    jobTitle: {
+        type: String,
+        required: [true, 'Job title is required!']
+    },
+    surname: {
+        type: String,
+        required: [true,  'Name is required']
+    },
+    firstname: {
+        type: String,
+        required: [true,  'Name is required']
+    },
+    lastname: {
+        type: String,
+        required: [true,  'Name is required']
+    },
+    username: {
+        type: String,
+        required: [true,  'Name is required']
+    },
+    gender: {
+        type: String,
+        required: [true, 'Gender type required']
+    },
     password: {
         type: 'string',
         required: [true, 'Password must be unique'],

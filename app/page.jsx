@@ -1,10 +1,11 @@
 'use client'
-import { Box, Button, Typography, Container, AppBar, IconButton, useTheme, colors } from "@mui/material"
+import { Box, Typography, Container, useTheme } from "@mui/material"
 import Link from "next/link";
 import Image from "next/image";
 import BarChart from "@components/BarChart";
 import LineChart from "@components/LineChart";
 import { tokens } from '@utils/theme';
+import { signOut } from "next-auth/react";
 
 
 const PageLabel = () => {
@@ -48,7 +49,7 @@ const NavSection = () => {
           </Link>
 
           {/* LOGIN */}
-          <Link href="/loginProfiles">
+          <Link href="/loginProfiles" onClick={() => signOut()}>
             <div className="flex flex-col items-center">
               <Image src="/assets/moreIcons/person.svg" alt="Toggle to the menu page" width={80} height={80} />
               <span className="mt-2">LOGIN TO PROFILE</span>
@@ -83,6 +84,7 @@ const Dashboard = () => {
 
 
 const Home = () => {
+
   return (
     <Box className="" justifyContent={"space-between"}>
       <PageLabel />

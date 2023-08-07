@@ -1,14 +1,13 @@
-'use client'
 
 import { useState } from 'react';
 import { Box, TextField, Button, FormControl } from '@mui/material';
 import { useTheme } from '@mui/material';
 import { tokens } from '@utils/theme';
 import { useRouter } from 'next/navigation';
-import { handler } from 'next-auth/react'
+import { signIn } from 'next-auth/react';
 
-const LoginForm = ({ isRegister, path }) => {
-    const router = useRouter();
+const LoginForm = ({ isRegister }) => {
+  const router = useRouter();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [jobId, setJobId] = useState('');
@@ -21,6 +20,7 @@ const LoginForm = ({ isRegister, path }) => {
   const [accessToken, setAccessToken] = useState('');
   const [gender, setGender] = useState('');
   const [image, setImage] = useState('');
+  
 
   const handleJobIdChange = (event) => {
     event.preventDefault();
@@ -119,24 +119,25 @@ const LoginForm = ({ isRegister, path }) => {
 
     } else {
         try {
-            alert("not user register");
-            const payload = {
-                jobId: jobId,
-                username: username,
-                password: password
-            }
-            // You can use the 'username' and 'password' state variables for authentication
-            const resp = await fetch('http://localhost:3000/api/auth/', {
-              method: "POST",
-              body: JSON.stringify(payload)
-            });
+          alert("not user register");
+         const payload = {
+          jobId: jobId, password: password
+         };
 
-            if(resp.ok) {
-                const response = await resp.json();
-                console.log("Authenticate attempt is determined as: ",  response);
+          // You can use the 'jobid', 'username' and 'password' state variables for authentication
+          signIn('dekutmeals-managerstab-auth', {
+            ...payload,
+            redirect: false
+          }).then(result => {
+            console.log(".then result: ", result);
 
-                router.push(`${path}`);
-            }
+            if (result.ok) {
+              router.push('/loginProfiles'); // attempt to login again to the appropriate job role.
+            }  else if (result.error) {
+              console.log("Error trying to signIn! ", result.error);
+            } 
+          })
+           
         } catch (error) {
             console.log("Error attempting to authenticate: ", error);
         }

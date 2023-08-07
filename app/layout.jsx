@@ -5,6 +5,7 @@ import TopBar from '@components/TopBar';
 import SideBar from '@components/SideBar';
 import { ColorModeContext, useMode } from '@utils/theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
+import Provider from '@components/Provider';
 
 export const metadata = {
     title: "Managers Tab",
@@ -19,6 +20,7 @@ const RootLayout = ({ children }) => {
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <html lang='en'>
+                    <Provider>
                     <body>
                         <container className='flex gap-4' style={{ height: '100vh', overflowY: 'auto'}}>
                             <SideBar />
@@ -28,6 +30,7 @@ const RootLayout = ({ children }) => {
                             </main>
                         </container>
                     </body>
+                </Provider>
                 </html>
             </ThemeProvider>
       </ColorModeContext.Provider>
