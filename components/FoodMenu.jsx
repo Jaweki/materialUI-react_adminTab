@@ -7,6 +7,7 @@ import Link from "next/link";
 import { AddCircle, RefreshRounded, RemoveCircle } from "@mui/icons-material";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from 'next/navigation';
+import { signOut } from "next-auth/react";
 
 const AddRowButton = ({ onAddRow }) => {
     return (
@@ -159,6 +160,7 @@ const FoodMenu = ({ buttonLabel, isUpdate }) => {
     }
 
     const handleSetMenu = async (data) => {
+        
         console.log("Order Placed", JSON.stringify(data));
         try {
             const response = await fetch('http://localhost:3000/api/menu/new', {
@@ -254,7 +256,7 @@ const FoodMenu = ({ buttonLabel, isUpdate }) => {
                         marginLeft: '230px',
                         color:  colors.greenAccent[500]
                     }} 
-                    onClick={isUpdate ? () => {handleSetMenu(rows)} : (undefined)} 
+                    onClick={isUpdate ? () => {handleSetMenu(rows); signOut()} : (undefined)} 
                 >
                     {buttonLabel}
                 </IconButton>

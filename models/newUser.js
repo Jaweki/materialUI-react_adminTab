@@ -2,13 +2,9 @@ import { Schema, model, models } from 'mongoose';
 
 const staffSchema = new Schema({
     jobId: {
-        type: Number,
-        unique: [true, 'Id already Exists!'],
-        required: [true, 'Staff Id is required'],
-        match: [
-            /^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/,
-            "Username invalid, it should contain 8-20 alphanumeric letters and be unique!"]
-          
+        type: String,
+        unique: [true, 'Job Id already Exists!'],
+        required: [true, 'Job Id is required'],
     },
     jobTitle: {
         type: String,
@@ -42,6 +38,10 @@ const staffSchema = new Schema({
     hireDate: {
         type: Date,
         required: [true, 'Date of hire is required']
+    },
+    imageMetadata: {
+        type: String,
+        required: [true, 'Image is required for new user']
     }
 })
 

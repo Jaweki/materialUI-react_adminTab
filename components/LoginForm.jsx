@@ -6,7 +6,7 @@ import { tokens } from '@utils/theme';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
 
-const LoginForm = ({ isRegister }) => {
+const LoginForm = ({ isRegister, redirectPath }) => {
   const router = useRouter();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -82,46 +82,78 @@ const LoginForm = ({ isRegister }) => {
         try {
             alert("user Register start")
 
-            const payload = {
-                jobId: jobId,
-                jobTitle: jobTitle,
-                surname: surname,
-                firstname: firstname,
-                lastname: lastname,
-                accessToken: accessToken,
-                username: username,
-                password: password,
-                gender: gender,
-                image: image
-            }
-            // make the submit to register new user
-            const resp = await fetch('/api/register', {
-            method: 'POST',
-            body: JSON.stringify(payload)
-        })
-            
-            const response = await resp.json();
-            if (resp.ok) {
-                alert("Response after successful registration.");
-                console.log(response);
-                // Instead of using 'includes', you can check the rank directly
-                if (response.includes('admin')) {
-                  router.push('/loginProfiles/admins');
-                } else {
-                  router.push('/loginProfiles/employees');
+
+
+            try {
+
+              const formData = new FormData();
+              formData.append("file", image);
+  
+              console.log(image);
+              console.log(formData);
+              const imageUploadResp = await fetch('/api/register/imageUpload', {
+                method: 'POST',
+                body: formData,
+              })
+              console.log(imageUploadResp);
+              const imageUploadData = await imageUploadResp.json();
+
+              if (imageUploadResp.ok) {
+                console.log(imageUploadData);
+                const imageKey = imageUploadData.imageMetadata;
+
+                const payload = {
+                  jobId: jobId.toString(),
+                  jobTitle: jobTitle.toLowerCase(),
+                  surname: surname.toLowerCase(),
+                  firstname: firstname.toLowerCase(),
+                  lastname: lastname.toLowerCase(),
+                  username: username.toLowerCase(),
+                  gender: gender.toLowerCase(),
+                  accessToken: accessToken,
+                  password: password,
+                  imageMetadata: imageKey
                 }
+                // make the submit to register new user
+                const resp = await fetch('/api/register', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(payload)
+                })
+
+                console.log(resp)
+                const response = await resp.json();
+                if (resp.ok) {
+                  alert("Response after successful registration.");
+                  console.log(response);
+                
+                  if (response.statusData.includes('Success')){
+                    router.push(`/`);
+                  } else if (response.statusData.includes('Failed')) {
+                    alert(`${response.statusData}`);
+                  }
+                
+                } else {
+                  alert("Error registering user: " + response.error);
+                }
+  
               } else {
-                alert("Error registering user: " + response.error);
+                console.log("image upload failed, ", imageUploadData);
               }
+            } catch (error) {
+              throw new Error(error);
+            }
         } catch (error) {
             console.log("Error at Client side; trying to register new user: ", error);
         }
 
     } else {
         try {
-          alert("not user register");
+          alert("Login in request received");
          const payload = {
-          jobId: jobId, password: password
+          jobId: jobId, username: username , password: password,
          };
 
           // You can use the 'jobid', 'username' and 'password' state variables for authentication
@@ -129,10 +161,14 @@ const LoginForm = ({ isRegister }) => {
             ...payload,
             redirect: false
           }).then(result => {
-            console.log(".then result: ", result);
+            console.log("Login result: ", result);
 
             if (result.ok) {
-              router.push('/loginProfiles'); // attempt to login again to the appropriate job role.
+              if (redirectPath) {
+                router.push(redirectPath);
+              } else {
+                router.push('/loginProfiles'); // attempt to login again to the appropriate job role.
+              }
             }  else if (result.error) {
               console.log("Error trying to signIn! ", result.error);
             } 
@@ -310,7 +346,7 @@ const LoginForm = ({ isRegister }) => {
                       <FormControl sx={{ width: '50vh', mt: '25px' }}>
                       <input type="file" name="image" accept="image/*" onChange={handleImageChange} />
                       </FormControl>
-                            <Button onClick={handleSubmit} variant="contained" color="primary" sx={{ mt: '20px', width: '25vh', height: '5vh'}}>
+                            <Button type="submit" variant="contained" color="primary" sx={{ mt: '20px', width: '25vh', height: '5vh'}}>
                             REGISTER
                             </Button>
                     </Box>

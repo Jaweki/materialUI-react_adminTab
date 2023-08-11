@@ -29,6 +29,7 @@ export const authOptions = {
                     if (!result) {
                         return null;
                     }
+                    console.log(result);
 
                     const comparePassword = await bcrypt.compare(credentials.password, result.password);
                     if (!comparePassword) {
@@ -47,7 +48,7 @@ export const authOptions = {
     ], 
     session: {
         strategy: "jwt",
-        maxAge: 1 * 1 * 5 * 60, // 30 days
+        maxAge: 1 * 1 * 5 * 60, 
     },
     secret: process.env.NEXTAUTH_SECRET,
     debug: process.env.NODE_ENV === "development",

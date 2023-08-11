@@ -23,7 +23,7 @@ const LoginPage = () => {
       return (
         <>
           <Header title={'AUTHENTICATE'} subtitle={'To Access services enter your credentials and Authenticate'}/>
-          <LoginForm isRegister={false}/>
+          <LoginForm isRegister={false} redirectPath={'/loginProfiles'}/>
         </>
       )
     }
@@ -43,7 +43,7 @@ const LoginPage = () => {
     return (
       <>
         <Header title={'AUTHENTICATE'} subtitle={'To Access services enter your credentials and Authenticate'}/>
-        <LoginForm isRegister={false}/>
+        <LoginForm isRegister={false} redirectPath={'/loginProfiles'}/>
       </>
     )
   }
