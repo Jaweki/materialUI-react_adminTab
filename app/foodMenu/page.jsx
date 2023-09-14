@@ -1,9 +1,10 @@
+'use client'
 import FoodMenu from "@components/FoodMenu"
 
-const page = () => {
+const CurrnetMenuPage = () => {
   return (
     <FoodMenu buttonLabel={"Update Menu"} isUpdate={false}  dataRows={[]}/>
   )
 }
 
-export default page
+export default CurrnetMenuPage;

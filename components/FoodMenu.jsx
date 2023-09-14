@@ -8,6 +8,7 @@ import { AddCircle, RefreshRounded, RemoveCircle } from "@mui/icons-material";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { signOut } from "next-auth/react";
+import Loading from '@components/Loading';
 
 const AddRowButton = ({ onAddRow }) => {
     return (
@@ -135,6 +136,7 @@ const FoodMenu = ({ buttonLabel, isUpdate }) => {
 
     useEffect(() => {
 
+        <Loading />
         const fetchMenu = async () => {
             const resp = await fetch('http://localhost:3000/api/menu');
             return await resp.json();
@@ -161,7 +163,7 @@ const FoodMenu = ({ buttonLabel, isUpdate }) => {
 
     const handleSetMenu = async (data) => {
         
-        console.log("Order Placed", JSON.stringify(data));
+        console.log("Set menu Assert. true: ", JSON.stringify(data));
         try {
             const response = await fetch('http://localhost:3000/api/menu/new', {
                 method: 'POST',
@@ -170,13 +172,13 @@ const FoodMenu = ({ buttonLabel, isUpdate }) => {
 
             console.log(await response.text());
             if (response.ok) {
+                // await signOut();
                 router.push('/foodMenu');
             }
         } catch (error) {
             console.log(error);
         }
     }
-
 
     const memorizedEditableDataGrid = useMemo(() => {
         const handleAddRow = () => {
@@ -247,20 +249,18 @@ const FoodMenu = ({ buttonLabel, isUpdate }) => {
         <Box className="grid grid-cols-2">
             <Header title="TODAY`S MENU" subtitle="View, Create or Update Menu from this page" />
 
-            <Link href="/foodMenu/update" >
-                <IconButton
-                    sx={{
-                        "&:hover": { color: colors.blueAccent[200]},
-                        borderRadius: "10px",
-                        width: '200px',
-                        marginLeft: '230px',
-                        color:  colors.greenAccent[500]
-                    }} 
-                    onClick={isUpdate ? () => {handleSetMenu(rows); signOut()} : (undefined)} 
-                >
-                    {buttonLabel}
-                </IconButton>
-            </Link>
+            <IconButton
+                sx={{ 
+                    "&:hover": { color: colors.blueAccent[200]},
+                    borderRadius: "10px",
+                    width: '200px',
+                    marginLeft: '230px',
+                    color:  colors.greenAccent[500]
+                }} 
+                onClick={ () => { isUpdate ? handleSetMenu(rows) :  router.push('/foodMenu/update') } } 
+            >
+                {buttonLabel}
+            </IconButton>
 
             <Box 
                 mt={3}

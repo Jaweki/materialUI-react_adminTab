@@ -3,46 +3,45 @@ import { Schema, models, model} from 'mongoose';
 const authUser = new Schema({
     jobId: {
         type: 'number',
-        required: [true, 'Job id is required. Should be Numeric only'],
-        unique: [true, 'Job id should be unique']
-    },
-    username: {
-        type: 'string',
-        required: [true, 'Username is required.'],
-        unique: [false],
-        match: [
-            /^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/,
-            "Username invalid, it should contain 8-20 alphanumeric letters and be unique!"
-        ]          
+        unique: [true, 'Job Id already Exists!'],
+        required: [true, 'Job Id is required'],
     },
     jobTitle: {
-        type: String,
+        type: 'string',
         required: [true, 'Job title is required!']
     },
     surname: {
-        type: String,
+        type: 'string',
         required: [true,  'Name is required']
     },
     firstname: {
-        type: String,
+        type: 'string',
         required: [true,  'Name is required']
     },
     lastname: {
-        type: String,
+        type: 'string',
         required: [true,  'Name is required']
     },
     username: {
-        type: String,
+        type: 'string',
         required: [true,  'Name is required']
-    },
-    gender: {
-        type: String,
-        required: [true, 'Gender type required']
     },
     password: {
         type: 'string',
-        required: [true, 'Password must be unique'],
-        unique: [true, 'Password should be unique'],
+        required: [true, 'Password required'],
+        unique: [true, "password should be unique"]
+    },
+    gender: {
+        type: 'string',
+        required: [true, 'Gender type required']
+    },
+    hireDate: {
+        type: Date,
+        required: [true, 'Date of hire is required']
+    },
+    imageMetadata: {
+        type: 'string',
+        required: [true, 'Image is required for new user']
     }
 })
 

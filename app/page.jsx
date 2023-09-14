@@ -6,11 +6,10 @@ import BarChart from "@components/BarChart";
 import LineChart from "@components/LineChart";
 import { tokens } from '@utils/theme';
 import { signOut } from "next-auth/react";
+import Loading from "@components/Loading";
 
 
 const PageLabel = () => {
-  const theme = useTheme();
-  // const colors = tokens(theme.palette.mode);
 
   return (
     <Box style={{ width: '700px', borderRadius: '10px' }}>
@@ -33,7 +32,7 @@ const NavSection = () => {
         <Box  backgroundColor={colors.greenAccent[200]} margin={1} borderRadius={10}>
         <div className="grid grid-cols-3 gap-3 blue_gradient">
           {/* Todays Menu */}
-          <Link href="/foodMenu" >
+          <Link href="" onClick={ async() => { <Loading />; await signOut(); window.location.href='/foodMenu'}} >
             <div className="flex flex-col items-center" >
               <Image src="/assets/moreIcons/food-menu.svg" alt="Toggle to the menu page" width={80} height={80} />
               <span className="mt-2">TODAY`S MENU</span>
@@ -41,7 +40,7 @@ const NavSection = () => {
           </Link>
 
           {/* Check-in-out */}
-          <Link href="/shiftRegister">
+          <Link href="" onClick={ async() => { <Loading />; await signOut(); window.location.href='/shiftRegister' }}>
             <div className="flex flex-col items-center">
               <Image src="/assets/moreIcons/check-in-out.svg" alt="Toggle to the menu page" width={80} height={80} />
               <span className="mt-2">CHECK IN/OUT</span>
@@ -49,7 +48,7 @@ const NavSection = () => {
           </Link>
 
           {/* LOGIN */}
-          <Link href="/loginProfiles" onClick={() => signOut()}>
+          <Link href="" onClick={async() => { <Loading />; await signOut(); window.location.href='/loginProfiles' }}>
             <div className="flex flex-col items-center">
               <Image src="/assets/moreIcons/person.svg" alt="Toggle to the menu page" width={80} height={80} />
               <span className="mt-2">LOGIN TO PROFILE</span>
@@ -65,7 +64,7 @@ const Dashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
-    <>
+    <Box >
     <Typography sx={{ fontSize: '40px' }} ml={8}>Analytics</Typography>
     <Box  margin="0px" style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}} >
     <Box height="250px" width="500px"  pl="5px" style={{ borderRadius: '5px' }} backgroundColor={colors.primary[400]} >
@@ -77,7 +76,7 @@ const Dashboard = () => {
       <BarChart />
     </Box>
     </Box>
-    </>
+    </Box>
   );
 };
 

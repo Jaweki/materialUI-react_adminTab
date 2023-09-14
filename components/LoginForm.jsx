@@ -103,7 +103,7 @@ const LoginForm = ({ isRegister, redirectPath }) => {
                 const imageKey = imageUploadData.imageMetadata;
 
                 const payload = {
-                  jobId: jobId.toString(),
+                  jobId: jobId,
                   jobTitle: jobTitle.toLowerCase(),
                   surname: surname.toLowerCase(),
                   firstname: firstname.toLowerCase(),
@@ -153,8 +153,9 @@ const LoginForm = ({ isRegister, redirectPath }) => {
         try {
           alert("Login in request received");
          const payload = {
-          jobId: jobId, username: username , password: password,
+          jobId: jobId.toString(), username: username.toLowerCase() , password: password,
          };
+         console.log("payload: ", payload);
 
           // You can use the 'jobid', 'username' and 'password' state variables for authentication
           signIn('dekutmeals-managerstab-auth', {
@@ -163,14 +164,14 @@ const LoginForm = ({ isRegister, redirectPath }) => {
           }).then(result => {
             console.log("Login result: ", result);
 
-            if (result.ok) {
-              if (redirectPath) {
-                router.push(redirectPath);
-              } else {
-                router.push('/loginProfiles'); // attempt to login again to the appropriate job role.
-              }
-            }  else if (result.error) {
+            if (result.ok && result.url !== null) {
+              console.log(redirectPath);
+              router.push(`${redirectPath}`);
+
+            }  else if (result.error ) {
               console.log("Error trying to signIn! ", result.error);
+              alert("Network Error. Try again in 2 minutes.");
+              router.push('/');
             } 
           })
            
@@ -185,7 +186,7 @@ const LoginForm = ({ isRegister, redirectPath }) => {
         {isRegister ? (
             <>
                 <Box backgroundColor={colors.greenAccent[800]} className="grid grid-row-2" 
-                  sx={{ boxShadow: '10px -10px 10px 0px black' , borderRadius: '20px', width: '900px', height: '450px', m: '50px auto'}}
+                  sx={{ boxShadow: '10px -10px 10px 0px black' , borderRadius: '20px', width: '140vh', height: '70vh', m: '0 auto', mt: '40px' }}
                 >
                   <form onSubmit={handleSubmit} >
 
@@ -193,7 +194,7 @@ const LoginForm = ({ isRegister, redirectPath }) => {
                         className="flex flex-row"
                       sx={{
                         display: 'flex',
-                        justifyContent: 'center',
+                        justifyContent: 'space-around',
                         width: '130vh',
                         height: '12vh',
                         m: "0px auto",
@@ -201,26 +202,28 @@ const LoginForm = ({ isRegister, redirectPath }) => {
                         borderRadius: '10px'
                       }}
                     >
-                      <FormControl sx={{ width: '55vh', mt: '12px' }}>
+                      <FormControl sx={{ width: '50vh', mt: '12px' }}>
                         <TextField
                           type='text'
                           label="Job Title"
                           value={jobTitle}
+                          variant='filled'
                           onChange={handleJobTitleChange}
                           autoComplete='off'
                           required
                         />
                       </FormControl>
-                      <FormControl sx={{ width: '55vh', mt: '12px' }} >
+                      <FormControl sx={{ width: '50vh', mt: '12px' }} >
                         <TextField
-                          type='text'
+                          type="text"
                           label="Job Id"
+                          variant='filled'
                           value={jobId}
                           onChange={handleJobIdChange}
                           autoComplete='off'
                           required
                         />
-                      </FormControl>
+                       </FormControl>
                     </Box>
                   
                     <Box backgroundColor={colors.primary[400]} 
@@ -358,7 +361,7 @@ const LoginForm = ({ isRegister, redirectPath }) => {
         ) : (
             <>
                 <Box backgroundColor={colors.greenAccent[800]} className="flex flex-col" 
-                  sx={{ boxShadow: '10px -10px 10px 0px black' , borderRadius: '20px', width: '500px', height: '450px', m: '50px auto'}}
+                  sx={{ boxShadow: '10px -10px 10px 0px black' , borderRadius: '20px', width: '500px', height: '65vh', m: '50px auto'}}
                 >
                   <form onSubmit={handleSubmit} >
                     <Box backgroundColor={colors.primary[500]} 
@@ -376,6 +379,7 @@ const LoginForm = ({ isRegister, redirectPath }) => {
                         <TextField
                           type='text'
                           label="Job Id"
+                          variant='filled'
                           value={jobId}
                           onChange={handleJobIdChange}
                           autoComplete='off'

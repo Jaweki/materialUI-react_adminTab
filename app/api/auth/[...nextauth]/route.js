@@ -15,9 +15,13 @@ export const authOptions = {
                 password: { label: "Password", type: "password", placeholder: "must be 8 or more & include special character" }
             },
             authorize: async (credentials) => {
-
+                console.log("\n\nauthentiaction requested for: ", credentials);
                 try {
-                    await connectToDB();
+                    const DBconnected = await connectToDB();
+
+                    if (DBconnected === false) {
+                        return null;
+                    }
 
                 } catch(error) {
                     console.log("Error connecting to DB: ", error);
@@ -48,7 +52,7 @@ export const authOptions = {
     ], 
     session: {
         strategy: "jwt",
-        maxAge: 1 * 1 * 5 * 60, 
+        maxAge: 1 * 24 * 60 * 60, 
     },
     secret: process.env.NEXTAUTH_SECRET,
     debug: process.env.NODE_ENV === "development",

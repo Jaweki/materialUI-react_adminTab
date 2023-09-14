@@ -20,9 +20,13 @@ const RootLayout = ({ children }) => {
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <html lang='en'>
+                    <head>
+                        <link rel='icon' href='/assets/moreImages/dekut-logo.jpg' type='image/x-icon' />
+                        <link rel='shortcut icon' href='/assets/moreImages/dekut-logo.jpg' type='image/x-icon' />
+                    </head>
                     <Provider>
                     <body>
-                        <container className='flex gap-4' style={{ height: '100vh', overflowY: 'auto'}}>
+                        <container className='flex gap-4' style={{ height: '100vh', overflowY: 'auto' }}>
                             <SideBar />
                             <main className='w-full content flex-1 flex-col'>
                                 <TopBar />
