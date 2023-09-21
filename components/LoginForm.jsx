@@ -74,110 +74,94 @@ const LoginForm = ({ isRegister, redirectPath }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(`ID: ${jobId}\n Username: ${username}\n Password: ${password}`)
     
-    alert("Continue?");
     if (isRegister) {
-        console.log(image);
+      try {
         try {
-            alert("user Register start")
 
+          const formData = new FormData();
+          formData.append("file", image);
 
+          const imageUploadResp = await fetch('/api/register/imageUpload', {
+            method: 'POST',
+            body: formData,
+          })
+          
+          const imageUploadData = await imageUploadResp.json();
 
-            try {
+          if (imageUploadResp.ok) {
+            
+            const imageKey = imageUploadData.imageMetadata;
 
-              const formData = new FormData();
-              formData.append("file", image);
-  
-              console.log(image);
-              console.log(formData);
-              const imageUploadResp = await fetch('/api/register/imageUpload', {
-                method: 'POST',
-                body: formData,
-              })
-              console.log(imageUploadResp);
-              const imageUploadData = await imageUploadResp.json();
-
-              if (imageUploadResp.ok) {
-                console.log(imageUploadData);
-                const imageKey = imageUploadData.imageMetadata;
-
-                const payload = {
-                  jobId: jobId,
-                  jobTitle: jobTitle.toLowerCase(),
-                  surname: surname.toLowerCase(),
-                  firstname: firstname.toLowerCase(),
-                  lastname: lastname.toLowerCase(),
-                  username: username.toLowerCase(),
-                  gender: gender.toLowerCase(),
-                  accessToken: accessToken,
-                  password: password,
-                  imageMetadata: imageKey
-                }
-                // make the submit to register new user
-                const resp = await fetch('/api/register', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(payload)
-                })
-
-                console.log(resp)
-                const response = await resp.json();
-                if (resp.ok) {
-                  alert("Response after successful registration.");
-                  console.log(response);
-                
-                  if (response.statusData.includes('Success')){
-                    router.push(`/`);
-                  } else if (response.statusData.includes('Failed')) {
-                    alert(`${response.statusData}`);
-                  }
-                
-                } else {
-                  alert("Error registering user: " + response.error);
-                }
-  
-              } else {
-                console.log("image upload failed, ", imageUploadData);
-              }
-            } catch (error) {
-              throw new Error(error);
+            const payload = {
+              jobId: jobId,
+              jobTitle: jobTitle.toLowerCase(),
+              surname: surname.toLowerCase(),
+              firstname: firstname.toLowerCase(),
+              lastname: lastname.toLowerCase(),
+              username: username.toLowerCase(),
+              gender: gender.toLowerCase(),
+              accessToken: accessToken,
+              password: password,
+              imageMetadata: imageKey
             }
+            // make the submit to register new user
+            const resp = await fetch('/api/register', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(payload)
+            })
+
+            // console.log(resp)
+            const response = await resp.json();
+            if (resp.ok) {
+              // console.log(response);
+              if (response.statusData.includes('Success')){
+                router.push(`/`);
+              } else if (response.statusData.includes('Failed')) {
+                alert(`${response.statusData}`);
+              }
+            
+            } else {
+              alert("Error registering user: " + response.error);
+            }
+
+          } else {
+            // console.log("image upload failed, ", imageUploadData);
+          }
         } catch (error) {
-            console.log("Error at Client side; trying to register new user: ", error);
+          throw new Error(error);
         }
+      } catch (error) {
+        // console.log("Error at Client side; trying to register new user: ", error);
+      }
 
     } else {
-        try {
-          alert("Login in request received");
-         const payload = {
-          jobId: jobId.toString(), username: username.toLowerCase() , password: password,
-         };
-         console.log("payload: ", payload);
+      try {
+        const payload = {
+        jobId: jobId.toString(), username: username.toLowerCase() , password: password,
+        };
 
-          // You can use the 'jobid', 'username' and 'password' state variables for authentication
-          signIn('dekutmeals-managerstab-auth', {
-            ...payload,
-            redirect: false
-          }).then(result => {
-            console.log("Login result: ", result);
+        // You can use the 'jobid', 'username' and 'password' state variables for authentication
+        signIn('dekutmeals-managerstab-auth', {
+          ...payload,
+          redirect: false
+        }).then(result => {
 
-            if (result.ok && result.url !== null) {
-              console.log(redirectPath);
-              router.push(`${redirectPath}`);
+          if (result.ok && result.url !== null) {
+            router.push(`${redirectPath}`);
 
-            }  else if (result.error ) {
-              console.log("Error trying to signIn! ", result.error);
-              alert("Network Error. Try again in 2 minutes.");
-              router.push('/');
-            } 
-          })
-           
-        } catch (error) {
-            console.log("Error attempting to authenticate: ", error);
-        }
+          }  else if (result.error ) {
+            alert("Network Error. Try again in 2 minutes.");
+            router.push('/');
+          } 
+        })
+          
+      } catch (error) {
+        //
+      }
     }
   };
 

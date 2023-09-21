@@ -16,34 +16,10 @@ import LiveTransactions from '@components/LiveTransactions';
 import Loading from '@components/Loading';
 
 const MainContent = ({ session, status }) => {
-  const router = useRouter();
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const mainColor = colors.primary[400];
-  const [expiresDate, setExpiresDate] = useState(new Date(session.expires));
-
-  useEffect(() => {
-    // Check if session Exists
-    if (session) {
-      const currentTime = new Date();
-      const sessionExpire = expiresDate - currentTime;
-
-      if ( sessionExpire > 0 ) {
-        console.log(`session expires in: ${sessionExpire} msec`);
-        const timeOutCheck = setTimeout( async() => {
-          console.log("Timer out");
-          // await signOut();
-          // router.push("/");
-          window.location.href="/";
-
-        }, sessionExpire);
-
-        return () => {
-          clearTimeout(timeOutCheck);
-        }
-      }
-    }
-  }, [expiresDate, router, session]);
+  const router = useRouter();
 
   return(
     <>
@@ -94,7 +70,34 @@ const AdminsMainPage = () => {
   const themes = useTheme();
   const colors = tokens(themes.palette.mode);
   const { data: session, status } = useSession();
+  const router = useRouter();
+  
+  useEffect(() => {
+    // Check if session Exists
+    if (session && session.expires) {
+      const currentTime = new Date();
+      const sessionExpire = new Date(session.expires) - currentTime;
 
+      if ( sessionExpire > 0 ) {
+        console.log(`session expires in: ${sessionExpire} msec`);
+        const timeOutCheck = setTimeout( () => {
+          
+          router.push('/session-expired');
+
+        }, sessionExpire);
+
+        return () => {
+          clearTimeout(timeOutCheck);
+        }
+      }
+    } else {
+      // Redirect to a session-expired page
+      return () => {
+
+        router.push('/session-expired');
+      }
+    }
+  }, [router, session]);
 
   return (
     <Box className="grid grid-cols-1">

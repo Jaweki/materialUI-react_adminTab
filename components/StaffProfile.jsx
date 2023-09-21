@@ -14,7 +14,7 @@ const StaffProfile = ({ session }) => {
           className='grid grid-cols-2 gap-4'
           onClick={() => {alert("Clicked")}}
         >
-          <Image src={session?.user.image} alt={session?.user.username} width={30} height={30}/>
+          <Image src={session?.user.image} alt={session?.user.username} width={40} height={40} className='rounded-full' loading='lazy'/>
           <div className='flex flex-col items-start'>
             <span style={{ fontSize: "25px"}}>Admins Profile</span>
             <span>{session?.user.username}</span>

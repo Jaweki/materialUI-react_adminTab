@@ -52,7 +52,7 @@ export const authOptions = {
     ], 
     session: {
         strategy: "jwt",
-        maxAge: 1 * 24 * 60 * 60, 
+        maxAge: 1 * 1 * 10* 60, 
     },
     secret: process.env.NEXTAUTH_SECRET,
     debug: process.env.NODE_ENV === "development",
@@ -66,6 +66,7 @@ export const authOptions = {
                 token.surname = user.surname;
                 token.username = user.username;
                 token.gender = user.gender;
+                token.image = `https://staff-profile-image.s3.eu-west-2.amazonaws.com/${user.imageMetadata}`;
             }
             
             return token
@@ -79,6 +80,7 @@ export const authOptions = {
                 session.user.surname = token.surname;
                 session.user.username = token.username;
                 session.user.gender = token.gender;
+                session.user.image = token.image;
             }
 
             return session;

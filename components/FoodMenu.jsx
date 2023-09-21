@@ -7,7 +7,7 @@ import Link from "next/link";
 import { AddCircle, RefreshRounded, RemoveCircle } from "@mui/icons-material";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from 'next/navigation';
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Loading from '@components/Loading';
 
 const AddRowButton = ({ onAddRow }) => {
@@ -100,6 +100,7 @@ const RefreshButton = ({ onRefresh }) => {
 const FoodMenu = ({ buttonLabel, isUpdate }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
+    const {data: session } = useSession();
     const initialColumns = [
         { field: "id", headerName: "ID", type: "number" },
         { 
@@ -136,9 +137,9 @@ const FoodMenu = ({ buttonLabel, isUpdate }) => {
 
     useEffect(() => {
 
-        <Loading />
         const fetchMenu = async () => {
-            const resp = await fetch('http://localhost:3000/api/menu');
+            <Loading />
+            const resp = await fetch(`http://localhost:${process.env.SERVER_PORT}/api/menu`);
             return await resp.json();
         }
         setRows([]);
@@ -165,7 +166,7 @@ const FoodMenu = ({ buttonLabel, isUpdate }) => {
         
         console.log("Set menu Assert. true: ", JSON.stringify(data));
         try {
-            const response = await fetch('http://localhost:3000/api/menu/new', {
+            const response = await fetch(`http://localhost:${process.env.SERVER_PORT}/api/menu/new`, {
                 method: 'POST',
                 body: JSON.stringify(data)
             })
@@ -181,6 +182,16 @@ const FoodMenu = ({ buttonLabel, isUpdate }) => {
     }
 
     const memorizedEditableDataGrid = useMemo(() => {
+        const currentTime = new Date();
+
+        if (session && session.expires) {
+            const expireTime = new Date(session.expires) - currentTime;
+
+            setTimeout(() => {
+                router.push('/session-expired/noLogin');
+            }, expireTime)
+        }
+
         const handleAddRow = () => {
             const newId = rows.length + 1;
             const  newRows = { id: newId, name: inputFood, price: inputPrice, vat: inputVat, date: new Date()}
@@ -203,17 +214,17 @@ const FoodMenu = ({ buttonLabel, isUpdate }) => {
         const handleFoodInput = (e) => {
             setInputFood(e.target.value) 
         }
-     
+        
         const handlePriceInput = (e) => {
             setInputPrice(e.target.value);
         }
-     
+        
         const handleVatInput = (e) => {
             setInputVat(e.target.value);
         }
-     
-         
-     
+        
+            
+        
         const handleSelectionModelChange = (selectedRowsIds) => {
             SetSelectedRows(selectedRowsIds);
         }
@@ -237,7 +248,7 @@ const FoodMenu = ({ buttonLabel, isUpdate }) => {
             />
         )
     }, [rows, columns, inputFood, 
-    inputPrice, inputVat, selectedRows ]);
+    inputPrice, inputVat, selectedRows, session, router ]);
 
     const memorizedNoneditDataGrid = useMemo(() => {
         return(
