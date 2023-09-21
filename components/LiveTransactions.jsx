@@ -5,7 +5,7 @@ import { tokens } from '@utils/theme';
 
 const getLiveMpesaTransactions = async () => {
     try{
-        const transactionsData = await  fetch(`http://localhost:${process.env.SERVER_PORT}/api/transactions/live`, {
+        const transactionsData = await  fetch(`http://localhost:3000/api/transactions/live`, {
             method: "GET",
         })
 

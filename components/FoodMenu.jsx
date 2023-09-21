@@ -134,12 +134,12 @@ const FoodMenu = ({ buttonLabel, isUpdate }) => {
     const [inputFood, setInputFood] = useState('');
     const [inputPrice, setInputPrice] = useState('');
     const [inputVat, setInputVat] = useState('');
-
+    
     useEffect(() => {
-
+        
         const fetchMenu = async () => {
             <Loading />
-            const resp = await fetch(`http://localhost:${process.env.SERVER_PORT}/api/menu`);
+            const resp = await fetch(`http://localhost:3000/api/menu`);
             return await resp.json();
         }
         setRows([]);

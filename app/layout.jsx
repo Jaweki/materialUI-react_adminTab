@@ -1,16 +1,12 @@
 'use client'
 
 import '@styles/globals.css';
+import Head from 'next/head';
 import TopBar from '@components/TopBar';
 import SideBar from '@components/SideBar';
 import { ColorModeContext, useMode } from '@utils/theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import Provider from '@components/Provider';
-
-export const metadata = {
-    title: "Managers Tab",
-    description: "Control the flow of services in the Cafeterial and kitchen all Digitally from one point"
-}
 
 const RootLayout = ({ children }) => {
     const [theme, colorMode] = useMode();
@@ -20,10 +16,15 @@ const RootLayout = ({ children }) => {
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <html lang='en'>
-                    <head>
+                    <Head>
+                        <title>Managers Tab</title>
+                        <meta
+                            name="description"
+                            content="Control the flow of services in the Cafeterial and kitchen all Digitally from one point"
+                        />
                         <link rel='icon' href='/assets/moreImages/dekut-logo.jpg' type='image/x-icon' />
                         <link rel='shortcut icon' href='/assets/moreImages/dekut-logo.jpg' type='image/x-icon' />
-                    </head>
+                    </Head>
                     <Provider>
                     <body>
                         <container className='flex gap-4' style={{ height: '100vh', overflowY: 'auto' }}>
