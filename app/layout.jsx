@@ -1,7 +1,6 @@
 'use client'
 
 import '@styles/globals.css';
-import Head from 'next/head';
 import TopBar from '@components/TopBar';
 import SideBar from '@components/SideBar';
 import { ColorModeContext, useMode } from '@utils/theme';
@@ -16,7 +15,7 @@ const RootLayout = ({ children }) => {
             <ThemeProvider theme={theme}>
                 <CssBaseline />
                 <html lang='en'>
-                    <Head>
+                    <head>
                         <title>Managers Tab</title>
                         <meta
                             name="description"
@@ -24,7 +23,7 @@ const RootLayout = ({ children }) => {
                         />
                         <link rel='icon' href='/assets/moreImages/dekut-logo.jpg' type='image/x-icon' />
                         <link rel='shortcut icon' href='/assets/moreImages/dekut-logo.jpg' type='image/x-icon' />
-                    </Head>
+                    </head>
                     <Provider>
                     <body>
                         <container className='flex gap-4' style={{ height: '100vh', overflowY: 'auto' }}>

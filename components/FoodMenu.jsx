@@ -7,7 +7,6 @@ import { AddCircle, RefreshRounded, RemoveCircle } from "@mui/icons-material";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from 'next/navigation';
 import { useSession } from "next-auth/react";
-import Loading from '@components/Loading';
 
 const AddRowButton = ({ onAddRow }) => {
     return (
