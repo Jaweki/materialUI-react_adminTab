@@ -3,11 +3,10 @@ import { Box, IconButton, TextField, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "@utils/theme";
 import Header from "./Header";
-import Link from "next/link";
 import { AddCircle, RefreshRounded, RemoveCircle } from "@mui/icons-material";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from 'next/navigation';
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Loading from '@components/Loading';
 
 const AddRowButton = ({ onAddRow }) => {
@@ -97,6 +96,14 @@ const RefreshButton = ({ onRefresh }) => {
     )
 }
 
+const CustomControls = ({ onDelete}) => {
+    return (
+        <>
+            <DeleteRowButton onDeleteRow={onDelete}/>
+        </>
+    )
+}
+
 const FoodMenu = ({ buttonLabel, isUpdate }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
@@ -128,7 +135,7 @@ const FoodMenu = ({ buttonLabel, isUpdate }) => {
     
     const router = useRouter();
     let initialRows = [];
-    const [columns, setColumns] = useState(initialColumns);
+    const [columns] = useState(initialColumns);
     const [rows, setRows] = useState(initialRows);
     const [selectedRows, SetSelectedRows] = useState([]);
     const [inputFood, setInputFood] = useState('');
@@ -138,8 +145,7 @@ const FoodMenu = ({ buttonLabel, isUpdate }) => {
     useEffect(() => {
         
         const fetchMenu = async () => {
-            <Loading />
-            const resp = await fetch(`http://localhost:3000/api/menu`);
+            const resp = await fetch(`/api/menu`);
             return await resp.json();
         }
         setRows([]);
@@ -154,26 +160,20 @@ const FoodMenu = ({ buttonLabel, isUpdate }) => {
     },[]);
 
     
-    const CustomControls = ({ onDelete}) => {
-        return (
-            <>
-                <DeleteRowButton onDeleteRow={onDelete}/>
-            </>
-        )
-    }
+   
 
     const handleSetMenu = async (data) => {
         
         console.log("Set menu Assert. true: ", JSON.stringify(data));
         try {
-            const response = await fetch(`http://localhost:${process.env.SERVER_PORT}/api/menu/new`, {
+            const response = await fetch(`/api/menu/new`, {
                 method: 'POST',
                 body: JSON.stringify(data)
             })
 
             console.log(await response.text());
             if (response.ok) {
-                // await signOut();
+                
                 router.push('/foodMenu');
             }
         } catch (error) {
@@ -184,7 +184,7 @@ const FoodMenu = ({ buttonLabel, isUpdate }) => {
     const memorizedEditableDataGrid = useMemo(() => {
         const currentTime = new Date();
 
-        if (session && session.expires) {
+        if (session?.expires) {
             const expireTime = new Date(session.expires) - currentTime;
 
             setTimeout(() => {

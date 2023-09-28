@@ -1,11 +1,11 @@
-import { Box, IconButton, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { tokens } from '@utils/theme';
 
 
 const getLiveMpesaTransactions = async () => {
     try{
-        const transactionsData = await  fetch(`http://localhost:3000/api/transactions/live`, {
+        const transactionsData = await  fetch(`/api/transactions/live`, {
             method: "GET",
         })
 
@@ -63,9 +63,9 @@ const formatDateToDayMonthYear = (date) => {
 
 
 const Transactions = ({ colors, transactions }) => {
-    return transactions.map((transaction, i) => (
+    return transactions.map((transaction) => (
         <Box
-            key={`${transaction.mpesaTransactionId}-${i}`}
+            key={transaction.mpesaTransactionId}
             display="flex"
             justifyContent="space-between"
             alignItems="center"

@@ -5,7 +5,7 @@ import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { tokens } from "@utils/theme";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import SalesAnalytics from '@components/SalesAnalytics';
 import MpesaOperations from '@components/MpesaOperations';
 import ReportGeneration from '@components/ReportGeneration';
@@ -13,7 +13,6 @@ import StaffProfile from '@components/StaffProfile';
 import Schedule from '@components/Schedule';
 import IssuesSuggestions from '@components/IssuesSuggestions';
 import LiveTransactions from '@components/LiveTransactions';
-import Loading from '@components/Loading';
 
 const MainContent = ({ session, status }) => {
   const theme = useTheme();
@@ -74,7 +73,7 @@ const AdminsMainPage = () => {
   
   useEffect(() => {
     // Check if session Exists
-    if (session && session.expires) {
+    if (session?.expires) {
       const currentTime = new Date();
       const sessionExpire = new Date(session.expires) - currentTime;
 
@@ -117,7 +116,6 @@ const AdminsMainPage = () => {
 
           <IconButton sx={{color: "red", borderRadius: "10px", alignSelf: "flex-end", mr: "10px", backgroundColor: colors.greenAccent[400] }}
             onClick={ async() => {
-              <Loading />
               await signOut(); window.location.href="/"}}
           >LOGOUT
           </IconButton>

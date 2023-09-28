@@ -4,7 +4,6 @@ import FoodMenu from '@components/FoodMenu';
 import LoginForm from '@components/LoginForm';
 import { useSession } from 'next-auth/react';
 import Header from '@components/Header';
-// import { updateDataFromDB } from '@utils/dbData';
 
 const Page = () => {
  
