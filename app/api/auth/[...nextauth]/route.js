@@ -35,13 +35,13 @@ export const authOptions = {
                     }
                     console.log(result);
 
-                    const comparePassword = await bcrypt.compare(credentials.password, result.password);
-                    if (!comparePassword) {
-                        console.log("Bad password! ", credentials.password);
-                        return null;
-                    }
+                    // const comparePassword = await bcrypt.compare(credentials.password, result.password);
+                    // if (!comparePassword) {
+                    //     console.log("Bad password! ", credentials.password);
+                    //     return null;
+                    // }
             
-                    console.log("User authenticated by DBauth: ", result);
+                    // console.log("User authenticated by DBauth: ", result);
                     return result;
                 } catch (error) {
                     console.log("Error occurred while authenticating user: ", error);
